@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>BootKick Simulator • Образовательный демо</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(#222, #111);
+        color: #0f0;
+        font-family: 'Courier New', monospace;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+    }
+    #game {
+        position: relative;
+        width: 800px;
+        height: 500px;
+        border: 4px solid #0f0;
+        background: #000;
+        overflow: hidden;
+        box-shadow: 0 0 30px #0f0;
+    }
+    #kid {
+        position: absolute;
+        font-size: 120px;
+        transition: transform 0.15s;
+        cursor: pointer;
+        user-select: none;
+    }
+    #boot {
+        position: absolute;
+        font-size: 90px;
+        left: 100px;
+        bottom: 80px;
+        transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.4, 1);
+        filter: drop-shadow(0 0 10px #f00);
+    }
+    .hit {
+        animation: hitAnim 0.4s ease-out forwards;
+    }
+    @keyframes hitAnim {
+        0%   { transform: scale(1) rotate(0deg); }
+        20%  { transform: scale(1.3) rotate(8deg); }
+        50%  { transform: scale(0.85) rotate(-12deg); }
+        100% { transform: scale(1) rotate(0deg); }
+    }
+    #score {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 28px;
+        text-shadow: 0 0 10px #0f0;
+    }
+    #combo {
+        position: absolute;
+        top: 60px;
+        left: 20px;
+        font-size: 22px;
+        color: #ff0;
+        text-shadow: 0 0 10px #ff0;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    #message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 40px;
+        color: #f00;
+        text-shadow: 0 0 20px #f00;
+        opacity: 0;
+        pointer-events: none;
+    }
+    button {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        font-size: 18px;
+        background: #300;
+        color: #0f0;
+        border: 2px solid #0f0;
+        cursor: pointer;
+    }
+    button:hover { background: #500; }
+</style>
+</head>
+<body>
+
+<div id="game">
+    <div id="score">Ударов: <span id="count">0</span></div>
+    <div id="combo">КОМБО ×<span id="comboCount">1</span></div>
+    
+    <div id="kid">👦</div>
+    <div id="boot">🥾</div>
+    
+    <div id="message"></div>
+    
+    <button onclick="resetGame()">Сбросить счёт</button>
+</div>
+
+<script>
+// === Основные переменные ===
+let score = 0;
+let combo = 1;
+let lastHitTime = 0;
+let hitsInRow = 0;
+
+const kid = document.getElementById('kid');
+const boot = document.getElementById('boot');
+const scoreEl = document.getElementById('count');
+const comboEl = document.getElementById('combo');
+const comboCountEl = document.getElementById('comboCount');
+const messageEl = document.getElementById('message');
+
+// Позиционируем ребёнка по центру
+kid.style.left = '380px';
+kid.style.top = '180px';
+
+// === Основная функция удара ===
+function kick() {
+    const now = Date.now();
+    
+    // Проверка комбо (максимум 2 секунды между ударами)
+    if (now - lastHitTime < 2000) {
+        hitsInRow++;
+        combo = Math.min(8, Math.floor(hitsInRow / 3) + 1);
+    } else {
+        hitsInRow = 1;
+        combo = 1;
+    }
+    lastHitTime = now;
+
+    score += combo * 10;
+    
+    // Визуальные эффекты
+    kid.classList.remove('hit');
+    void kid.offsetWidth; // force reflow
+    kid.classList.add('hit');
+    
+    // Анимация ботинка (пинок)
+    boot.style.transform = 'translateX(420px) translateY(-120px) rotate(-45deg)';
+    
+    setTimeout(() => {
+        boot.style.transform = 'translateX(0) translateY(0) rotate(0deg)';
+    }, 180);
+
+    // Обновляем счёт
+    scoreEl.textContent = score;
+    
+    // Комбо
+    comboCountEl.textContent = combo;
+    comboEl.style.opacity = '1';
+    setTimeout(() => {
+        if (Date.now() - lastHitTime > 1500) comboEl.style.opacity = '0';
+    }, 800);
+
+    // Случайные "реакции" (чисто для веселья)
+    const reactions = [
+        "Ой...", "Ауч!", "🤕", "💥", "Хватит!", "Мамочка!", 
+        "Это же образовательный контент!", "Я ничего не чувствую..."
+    ];
+    
+    if (Math.random() < 0.4) {
+        showMessage(reactions[Math.floor(Math.random() * reactions.length)]);
+    }
+
+    // Пасхалка на большое комбо
+    if (combo >= 6 && Math.random() < 0.3) {
+        showMessage("💀 КРИТИЧЕСКИЙ УДАР 💀", 1200);
+    }
+}
+
+function showMessage(text, timeout = 900) {
+    messageEl.textContent = text;
+    messageEl.style.opacity = '1';
+    setTimeout(() => {
+        messageEl.style.opacity = '0';
+    }, timeout);
+}
+
+// === Клик по ребёнку = пинок ===
+kid.addEventListener('click', kick);
+
+// Дополнительно можно кликать и по ботинку
+boot.addEventListener('click', kick);
+
+// === Сброс игры ===
+function resetGame() {
+    if (confirm("Сбросить весь прогресс?")) {
+        score = 0;
+        combo = 1;
+        hitsInRow = 0;
+        scoreEl.textContent = '0';
+        comboEl.style.opacity = '0';
+        showMessage("Счёт сброшен ✅", 800);
+    }
+}
+
+// Пасхальное сообщение при загрузке
+setTimeout(() => {
+    showMessage("Кликни на 👦 чтобы пнуть (образовательный демо)", 2500);
+}, 800);
+
+// Предупреждение в консоли (чисто для разработчика)
+console.log("%cИгра запущена исключительно в образовательных целях.\nПоказывает, как НЕ надо себя вести с людьми.", "color:#0f0; font-size:14px");
+</script>
+
+</body>
+</html>
