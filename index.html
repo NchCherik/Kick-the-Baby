@@ -2,214 +2,476 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>BootKick Simulator • Образовательный демо</title>
+<title>ПИНОК ПО ВИРТУАЛЬНОМУ РЕБЁНКУ</title>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+
     body {
         margin: 0;
         height: 100vh;
-        background: linear-gradient(#222, #111);
-        color: #0f0;
-        font-family: 'Courier New', monospace;
+        background: linear-gradient(#f8f1e3, #e8d9c0);
+        color: #333;
+        font-family: 'Comic Neue', cursive;
         overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
         user-select: none;
+        transition: background 1.2s ease;
     }
+
     #game {
         position: relative;
-        width: 800px;
-        height: 500px;
-        border: 4px solid #0f0;
-        background: #000;
+        width: 860px;
+        height: 560px;
+        border: 10px solid #5c4033;
+        background: #fff9e6;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.25);
         overflow: hidden;
-        box-shadow: 0 0 30px #0f0;
+        border-radius: 20px;
     }
+
     #kid {
         position: absolute;
-        font-size: 120px;
-        transition: transform 0.15s;
+        left: 310px;
+        top: 115px;
+        font-size: 230px;
+        transition: all 0.25s ease-out;
         cursor: pointer;
-        user-select: none;
+        z-index: 10;
     }
+
     #boot {
         position: absolute;
-        font-size: 90px;
-        left: 100px;
-        bottom: 80px;
-        transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.4, 1);
-        filter: drop-shadow(0 0 10px #f00);
+        left: 90px;
+        bottom: 75px;
+        font-size: 165px;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        z-index: 20;
     }
+
     .hit {
-        animation: hitAnim 0.4s ease-out forwards;
+        animation: childHit 0.6s ease-out forwards;
     }
-    @keyframes hitAnim {
+
+    @keyframes childHit {
         0%   { transform: scale(1) rotate(0deg); }
-        20%  { transform: scale(1.3) rotate(8deg); }
-        50%  { transform: scale(0.85) rotate(-12deg); }
+        25%  { transform: scale(1.42) rotate(19deg) translateY(-42px); }
+        60%  { transform: scale(0.86) rotate(-23deg) translateY(26px); }
         100% { transform: scale(1) rotate(0deg); }
     }
-    #score {
+
+    #scorePanel {
         position: absolute;
-        top: 20px;
-        left: 20px;
-        font-size: 28px;
-        text-shadow: 0 0 10px #0f0;
+        top: 25px;
+        left: 30px;
+        background: #fff;
+        border: 6px solid #5c4033;
+        padding: 15px 30px;
+        border-radius: 15px;
+        font-size: 34px;
+        font-weight: 700;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        z-index: 60;
     }
+
     #combo {
         position: absolute;
-        top: 60px;
-        left: 20px;
-        font-size: 22px;
-        color: #ff0;
-        text-shadow: 0 0 10px #ff0;
+        top: 105px;
+        left: 35px;
+        font-size: 30px;
+        color: #c0392b;
+        background: #fff;
+        padding: 10px 25px;
+        border-radius: 15px;
+        border: 5px solid #c0392b;
         opacity: 0;
-        transition: opacity 0.3s;
+        transition: all 0.4s;
+        box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+        z-index: 60;
     }
+
+    .floating {
+        position: absolute;
+        font-size: 33px;
+        font-weight: 700;
+        color: #d35400;
+        pointer-events: none;
+        text-shadow: 3px 3px 6px rgba(0,0,0,0.35);
+        animation: floatPhrase 2.2s forwards;
+        z-index: 35;
+    }
+
+    @keyframes floatPhrase {
+        0%   { opacity: 1; transform: translateY(0) scale(1); }
+        100% { opacity: 0; transform: translateY(-235px) scale(0.55); }
+    }
+
     #message {
+        position: absolute;
+        top: 48%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 42px;
+        color: #c0392b;
+        font-weight: 700;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 60;
+        text-align: center;
+    }
+
+    button {
+        padding: 15px 28px;
+        font-family: 'Comic Neue', cursive;
+        font-size: 20px;
+        background: #fff;
+        color: #333;
+        border: 6px solid #5c4033;
+        border-radius: 15px;
+        box-shadow: 0 8px 0 #3c2a1f;
+        cursor: pointer;
+        transition: all 0.1s;
+    }
+
+    button:active {
+        transform: translateY(5px);
+        box-shadow: 0 3px 0 #3c2a1f;
+    }
+
+    #shopBtn { position: absolute; bottom: 28px; right: 32px; }
+
+    #shop {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-size: 40px;
-        color: #f00;
-        text-shadow: 0 0 20px #f00;
-        opacity: 0;
-        pointer-events: none;
+        width: 720px;
+        background: #fff9e6;
+        border: 10px solid #5c4033;
+        border-radius: 25px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        padding: 30px;
+        display: none;
+        z-index: 100;
+        max-height: 82vh;
+        overflow-y: auto;
     }
-    button {
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-        padding: 10px 20px;
-        font-size: 18px;
-        background: #300;
-        color: #0f0;
-        border: 2px solid #0f0;
-        cursor: pointer;
+
+    .shop-section { margin-bottom: 40px; }
+    .shop-section h3 {
+        margin: 0 0 20px 0;
+        font-size: 28px;
+        color: #5c4033;
+        border-bottom: 4px solid #c0392b;
+        padding-bottom: 10px;
     }
-    button:hover { background: #500; }
+
+    .item {
+        display: flex;
+        align-items: center;
+        padding: 18px 25px;
+        margin: 14px 0;
+        background: #fff;
+        border: 5px solid #5c4033;
+        border-radius: 18px;
+        gap: 25px;
+        font-size: 48px;
+    }
 </style>
 </head>
 <body>
 
 <div id="game">
-    <div id="score">Ударов: <span id="count">0</span></div>
-    <div id="combo">КОМБО ×<span id="comboCount">1</span></div>
+    <div id="scorePanel">Очки: <span id="count">0</span></div>
+    <div id="combo">×<span id="comboCount">1</span> КОМБО</div>
     
-    <div id="kid">👦</div>
+    <div id="kid">👶</div>
     <div id="boot">🥾</div>
     
     <div id="message"></div>
     
-    <button onclick="resetGame()">Сбросить счёт</button>
+    <button id="shopBtn">🛒 МАГАЗИН</button>
 </div>
 
+<div id="shop">
+    <h2 style="text-align:center; margin-bottom:25px; color:#5c4033;">МАГАЗИН</h2>
+    
+    <div class="shop-section">
+        <h3>🔧 УЛУЧШЕНИЯ</h3>
+        <div id="upgrades"></div>
+    </div>
+    
+    <div class="shop-section">
+        <h3>🥾 ТИПЫ ПИНКА</h3>
+        <div id="weaponSkins"></div>
+    </div>
+    
+    <div class="shop-section">
+        <h3>🍰 КОРМЛЕНИЕ</h3>
+        <div class="item">
+            <span>🍰</span>
+            <div style="flex:1;">
+                <strong>Тортик</strong><br>
+                <small>Покормить ребёнка (+30–60 очков)</small>
+            </div>
+            <button onclick="feedKid()">Покормить</button>
+        </div>
+    </div>
+    
+    <div style="text-align:center; margin-top:30px;">
+        <button onclick="closeShop()">ЗАКРЫТЬ МАГАЗИН</button>
+    </div>
+</div>
+
+<audio id="monsterAudio" loop>
+    <source src="monster.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-// === Основные переменные ===
+// === ПЕРЕМЕННЫЕ ===
 let score = 0;
 let combo = 1;
-let lastHitTime = 0;
-let hitsInRow = 0;
+let lastHit = 0;
+let streak = 0;
+let isEpicMode = false;
 
-const kid = document.getElementById('kid');
-const boot = document.getElementById('boot');
-const scoreEl = document.getElementById('count');
+let multipliers = { power: 1, comboSpeed: 1, auto: 0 };
+
+const upgradesList = [
+    { id: "power", name: "Сильный удар", costBase: 120, level: 0, max: 12, desc: "+25% очков", effect: () => multipliers.power += 0.25 },
+    { id: "combo", name: "Быстрое комбо", costBase: 280, level: 0, max: 8,  desc: "Комбо быстрее", effect: () => multipliers.comboSpeed += 0.3 },
+    { id: "auto",  name: "Авто-пинки",   costBase: 450, level: 0, max: 10, desc: "+3 очка/сек", effect: () => multipliers.auto += 3 }
+];
+
+const weaponSkins = [
+    { 
+        name: "Ботинок", emoji: "🥾", anim: "translateX(520px) translateY(-170px) rotate(-55deg)",
+        phrases: ["Ой, больно в ноге", "Не бей так сильно", "Я уже плачу", "Мне грустно"]
+    },
+    { 
+        name: "Сковорода", emoji: "🥘", anim: "translateX(510px) translateY(-155px) rotate(-130deg)",
+        phrases: ["Горячо очень", "Кожа щиплет", "Больно в боку", "Не хочу так"]
+    },
+    { 
+        name: "Утюг", emoji: "♨️", anim: "translateX(530px) translateY(-135px) scale(0.85)",
+        phrases: ["Ой горячо", "Печёт сильно", "Мне жарко", "Не дави"]
+    },
+    { 
+        name: "Ремень", emoji: "🔗", anim: "translateX(470px) translateY(-205px) rotate(48deg)",
+        phrases: ["Ай ремень", "Жжёт по попе", "Будет синяк", "Не бей ремнём"]
+    },
+    { 
+        name: "Арматура", emoji: "🛠️", anim: "translateX(545px) translateY(-125px)",
+        phrases: ["Холодно и твёрдо", "Больно в костях", "Ой ой", "Пожалуйста остановись"]
+    },
+    { 
+        name: "Табуретка", emoji: "🪑", anim: "translateX(495px) translateY(-195px) rotate(92deg)",
+        phrases: ["Тяжёлая табуретка", "Мне очень тяжело", "Я уже не могу", "Хватит стулом"]
+    }
+];
+
+let currentWeapon = 0;
+
+const kidEl = document.getElementById('kid');
+const bootEl = document.getElementById('boot');
+const countEl = document.getElementById('count');
 const comboEl = document.getElementById('combo');
 const comboCountEl = document.getElementById('comboCount');
-const messageEl = document.getElementById('message');
+const msgEl = document.getElementById('message');
+const shopEl = document.getElementById('shop');
+const monsterAudio = document.getElementById('monsterAudio');
 
-// Позиционируем ребёнка по центру
-kid.style.left = '380px';
-kid.style.top = '180px';
+// Применение смайликов
+function applySkin() {
+    bootEl.textContent = weaponSkins[currentWeapon].emoji;
+}
 
-// === Основная функция удара ===
+// Покормить тортиком
+window.feedKid = function() {
+    score += 35 + Math.floor(Math.random() * 35);
+    countEl.textContent = Math.floor(score).toLocaleString('ru-RU');
+    
+    kidEl.style.transform = 'scale(1.15)';
+    setTimeout(() => kidEl.style.transform = 'scale(1)', 500);
+
+    const msgs = ["Вкусно спасибо", "Ммм сладкий", "Я немного успокоился"];
+    msgEl.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+    msgEl.style.opacity = '1';
+    setTimeout(() => msgEl.style.opacity = '0', 1400);
+};
+
+// Пинок
 function kick() {
     const now = Date.now();
+    const timeDiff = now - lastHit;
     
-    // Проверка комбо (максимум 2 секунды между ударами)
-    if (now - lastHitTime < 2000) {
-        hitsInRow++;
-        combo = Math.min(8, Math.floor(hitsInRow / 3) + 1);
+    if (timeDiff < 2100 / multipliers.comboSpeed) {
+        streak++;
+        combo = Math.min(9, Math.floor(streak / 4) + 1);
     } else {
-        hitsInRow = 1;
+        streak = 1;
         combo = 1;
     }
-    lastHitTime = now;
+    lastHit = now;
 
-    score += combo * 10;
-    
-    // Визуальные эффекты
-    kid.classList.remove('hit');
-    void kid.offsetWidth; // force reflow
-    kid.classList.add('hit');
-    
-    // Анимация ботинка (пинок)
-    boot.style.transform = 'translateX(420px) translateY(-120px) rotate(-45deg)';
-    
-    setTimeout(() => {
-        boot.style.transform = 'translateX(0) translateY(0) rotate(0deg)';
-    }, 180);
+    const points = Math.floor(7 * multipliers.power * combo);
+    score += points;
+    countEl.textContent = Math.floor(score).toLocaleString('ru-RU');
 
-    // Обновляем счёт
-    scoreEl.textContent = score;
-    
-    // Комбо
+    kidEl.classList.remove('hit');
+    void kidEl.offsetWidth;
+    kidEl.classList.add('hit');
+
+    bootEl.style.transform = weaponSkins[currentWeapon].anim;
+    setTimeout(() => bootEl.style.transform = '', 340);
+
+    // Эпик-режим для табуретки
+    if (currentWeapon === 5) {
+        document.body.style.background = '#9f0000';
+        isEpicMode = true;
+        monsterAudio.currentTime = 0;
+        monsterAudio.play().catch(() => {});
+    }
+
+    // Плавающие фразы (с разбросом, чтобы не накладывались)
+    const phrases = weaponSkins[currentWeapon].phrases;
+    phrases.forEach((phrase, i) => {
+        if (Math.random() > 0.35) {
+            setTimeout(() => {
+                const el = document.createElement('div');
+                el.className = 'floating';
+                el.textContent = phrase;
+                const gameRect = document.getElementById('game').getBoundingClientRect();
+                const kRect = kidEl.getBoundingClientRect();
+                const x = kRect.left - gameRect.left + 85 + (Math.random() * 90 - 45);
+                const y = kRect.top - gameRect.top + 105 + (i * 28);
+                el.style.left = x + 'px';
+                el.style.top = y + 'px';
+                document.getElementById('game').appendChild(el);
+                setTimeout(() => el.remove(), 2250);
+            }, i * 160);
+        }
+    });
+
     comboCountEl.textContent = combo;
     comboEl.style.opacity = '1';
-    setTimeout(() => {
-        if (Date.now() - lastHitTime > 1500) comboEl.style.opacity = '0';
-    }, 800);
+    setTimeout(() => { if (Date.now() - lastHit > 1700) comboEl.style.opacity = '0'; }, 700);
 
-    // Случайные "реакции" (чисто для веселья)
-    const reactions = [
-        "Ой...", "Ауч!", "🤕", "💥", "Хватит!", "Мамочка!", 
-        "Это же образовательный контент!", "Я ничего не чувствую..."
-    ];
+    if (Math.random() < 0.45) {
+        msgEl.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+        msgEl.style.opacity = '1';
+        setTimeout(() => msgEl.style.opacity = '0', 1000);
+    }
+}
+
+// Магазин
+function renderShop() {
+    const upContainer = document.getElementById('upgrades');
+    upContainer.innerHTML = '';
+    upgradesList.forEach((up, i) => {
+        const cost = Math.floor(up.costBase * Math.pow(1.4, up.level));
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.style.fontSize = '23px';
+        div.innerHTML = `
+            <div style="flex:1;">
+                <strong>${up.name}</strong><br>
+                <small>${up.desc} • Уровень ${up.level}/${up.max}</small>
+            </div>
+            <button onclick="buyUpgrade(${i})" ${up.level >= up.max ? 'disabled' : ''}>
+                ${cost} очков
+            </button>
+        `;
+        upContainer.appendChild(div);
+    });
+
+    const weaponContainer = document.getElementById('weaponSkins');
+    weaponContainer.innerHTML = '';
+    weaponSkins.forEach((skin, i) => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `
+            <span>${skin.emoji}</span>
+            <div style="flex:1;"><strong>${skin.name}</strong></div>
+            <button onclick="selectWeapon(${i})">Выбрать</button>
+        `;
+        weaponContainer.appendChild(div);
+    });
+}
+
+window.buyUpgrade = function(i) {
+    const up = upgradesList[i];
+    const cost = Math.floor(up.costBase * Math.pow(1.4, up.level));
+    if (score >= cost && up.level < up.max) {
+        score -= cost;
+        up.level++;
+        up.effect();
+        countEl.textContent = Math.floor(score).toLocaleString('ru-RU');
+        renderShop();
+        saveGame();
+    }
+};
+
+window.selectWeapon = function(i) {
+    currentWeapon = i;
+    bootEl.textContent = weaponSkins[i].emoji;
     
-    if (Math.random() < 0.4) {
-        showMessage(reactions[Math.floor(Math.random() * reactions.length)]);
+    if (isEpicMode) {
+        document.body.style.background = 'linear-gradient(#f8f1e3, #e8d9c0)';
+        monsterAudio.pause();
+        isEpicMode = false;
     }
+    
+    saveGame();
+    closeShop();
+};
 
-    // Пасхалка на большое комбо
-    if (combo >= 6 && Math.random() < 0.3) {
-        showMessage("💀 КРИТИЧЕСКИЙ УДАР 💀", 1200);
-    }
+function openShop() {
+    shopEl.style.display = 'block';
+    renderShop();
 }
 
-function showMessage(text, timeout = 900) {
-    messageEl.textContent = text;
-    messageEl.style.opacity = '1';
-    setTimeout(() => {
-        messageEl.style.opacity = '0';
-    }, timeout);
+function closeShop() {
+    shopEl.style.display = 'none';
 }
 
-// === Клик по ребёнку = пинок ===
-kid.addEventListener('click', kick);
+function saveGame() {
+    localStorage.setItem('bootkickEmojiFinal', JSON.stringify({score, multipliers, currentWeapon, upgrades: upgradesList}));
+}
 
-// Дополнительно можно кликать и по ботинку
-boot.addEventListener('click', kick);
-
-// === Сброс игры ===
-function resetGame() {
-    if (confirm("Сбросить весь прогресс?")) {
-        score = 0;
-        combo = 1;
-        hitsInRow = 0;
-        scoreEl.textContent = '0';
-        comboEl.style.opacity = '0';
-        showMessage("Счёт сброшен ✅", 800);
+function loadSave() {
+    const data = localStorage.getItem('bootkickEmojiFinal');
+    if (data) {
+        const parsed = JSON.parse(data);
+        score = parsed.score || 0;
+        multipliers = parsed.multipliers || multipliers;
+        currentWeapon = parsed.currentWeapon || 0;
+        if (parsed.upgrades) {
+            upgradesList.forEach((up, i) => {
+                if (parsed.upgrades[i]) up.level = parsed.upgrades[i].level || 0;
+            });
+        }
     }
+    countEl.textContent = Math.floor(score).toLocaleString('ru-RU');
+    bootEl.textContent = weaponSkins[currentWeapon].emoji;
 }
 
-// Пасхальное сообщение при загрузке
+// Запуск
+kidEl.addEventListener('click', kick);
+bootEl.addEventListener('click', kick);
+document.getElementById('shopBtn').addEventListener('click', openShop);
+
+loadSave();
+
 setTimeout(() => {
-    showMessage("Кликни на 👦 чтобы пнуть (образовательный демо)", 2500);
-}, 800);
+    msgEl.textContent = "КЛИКАЙ НА 😢\nМожно покормить тортиком в магазине";
+    msgEl.style.opacity = '1';
+    setTimeout(() => msgEl.style.opacity = '0', 2800);
+}, 600);
 
-// Предупреждение в консоли (чисто для разработчика)
-console.log("%cИгра запущена исключительно в образовательных целях.\nПоказывает, как НЕ надо себя вести с людьми.", "color:#0f0; font-size:14px");
+console.log("%cВерсия со смайликами и исправлениями готова!", "color:#d35400");
 </script>
 
 </body>
