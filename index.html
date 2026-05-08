@@ -2,227 +2,309 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>ПИНОК ПО ВИРТУАЛЬНОМУ РЕБЁНКУ</title>
+
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
 
-    body {
-        margin: 0;
-        height: 100vh;
-        background: linear-gradient(#f8f1e3, #e8d9c0);
-        color: #333;
-        font-family: 'Comic Neue', cursive;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        user-select: none;
-        transition: background 1.2s ease;
-    }
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(#f8f1e3, #e8d9c0);
+    color: #333;
+    font-family: 'Comic Neue', cursive;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    transition: background 1.2s ease;
 
-    #game {
-        position: relative;
-        width: 860px;
-        height: 560px;
-        border: 10px solid #5c4033;
-        background: #fff9e6;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-        overflow: hidden;
-        border-radius: 20px;
-    }
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+}
 
-    #kid {
-        position: absolute;
-        left: 310px;
-        top: 115px;
-        font-size: 230px;
-        transition: all 0.25s ease-out;
-        cursor: pointer;
-        z-index: 10;
-    }
+#game {
+    position: relative;
+    width: 860px;
+    height: 560px;
+    border: 10px solid #5c4033;
+    background: #fff9e6;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    overflow: hidden;
+    border-radius: 20px;
+}
 
-    #boot {
-        position: absolute;
-        left: 90px;
-        bottom: 75px;
-        font-size: 165px;
-        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        cursor: pointer;
-        z-index: 20;
-    }
+#kid {
+    position: absolute;
+    left: 310px;
+    top: 115px;
+    font-size: 230px;
+    transition: all 0.25s ease-out;
+    cursor: pointer;
+    z-index: 10;
 
-    .hit {
-        animation: childHit 0.6s ease-out forwards;
-    }
+    pointer-events: auto;
+    -webkit-user-drag: none;
+    user-drag: none;
+}
 
-    @keyframes childHit {
-        0%   { transform: scale(1) rotate(0deg); }
-        25%  { transform: scale(1.42) rotate(19deg) translateY(-42px); }
-        60%  { transform: scale(0.86) rotate(-23deg) translateY(26px); }
-        100% { transform: scale(1) rotate(0deg); }
-    }
+#boot {
+    position: absolute;
+    left: 90px;
+    bottom: 75px;
+    font-size: 165px;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    z-index: 20;
 
-    #scorePanel {
-        position: absolute;
-        top: 25px;
-        left: 30px;
-        background: #fff;
-        border: 6px solid #5c4033;
-        padding: 15px 30px;
-        border-radius: 15px;
-        font-size: 34px;
-        font-weight: 700;
-        box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-        z-index: 60;
-    }
+    pointer-events: auto;
+    -webkit-user-drag: none;
+    user-drag: none;
+}
 
-    #combo {
-        position: absolute;
-        top: 105px;
-        left: 35px;
-        font-size: 30px;
-        color: #c0392b;
-        background: #fff;
-        padding: 10px 25px;
-        border-radius: 15px;
-        border: 5px solid #c0392b;
-        opacity: 0;
-        transition: all 0.4s;
-        box-shadow: 0 5px 12px rgba(0,0,0,0.15);
-        z-index: 60;
-    }
+.hit {
+    animation: childHit 0.6s ease-out forwards;
+}
 
-    .floating {
-        position: absolute;
-        font-size: 33px;
-        font-weight: 700;
-        color: #d35400;
-        pointer-events: none;
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.35);
-        animation: floatPhrase 2.2s forwards;
-        z-index: 35;
-    }
+@keyframes childHit {
+    0%   { transform: scale(1) rotate(0deg); }
+    25%  { transform: scale(1.42) rotate(19deg) translateY(-42px); }
+    60%  { transform: scale(0.86) rotate(-23deg) translateY(26px); }
+    100% { transform: scale(1) rotate(0deg); }
+}
 
-    @keyframes floatPhrase {
-        0%   { opacity: 1; transform: translateY(0) scale(1); }
-        100% { opacity: 0; transform: translateY(-235px) scale(0.55); }
-    }
+#scorePanel {
+    position: absolute;
+    top: 25px;
+    left: 30px;
+    background: #fff;
+    border: 6px solid #5c4033;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-size: 34px;
+    font-weight: 700;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    z-index: 60;
+}
 
-    #message {
-        position: absolute;
-        top: 48%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 42px;
-        color: #c0392b;
-        font-weight: 700;
-        opacity: 0;
-        pointer-events: none;
-        z-index: 60;
-        text-align: center;
-    }
+#combo {
+    position: absolute;
+    top: 105px;
+    left: 35px;
+    font-size: 30px;
+    color: #c0392b;
+    background: #fff;
+    padding: 10px 25px;
+    border-radius: 15px;
+    border: 5px solid #c0392b;
+    opacity: 0;
+    transition: all 0.4s;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+    z-index: 60;
+}
 
-    button {
-        padding: 15px 28px;
-        font-family: 'Comic Neue', cursive;
-        font-size: 20px;
-        background: #fff;
-        color: #333;
-        border: 6px solid #5c4033;
-        border-radius: 15px;
-        box-shadow: 0 8px 0 #3c2a1f;
-        cursor: pointer;
-        transition: all 0.1s;
-    }
+.floating {
+    position: absolute;
+    font-size: 33px;
+    font-weight: 700;
+    color: #d35400;
+    pointer-events: none;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.35);
+    animation: floatPhrase 2.2s forwards;
+    z-index: 35;
+}
 
-    button:active {
-        transform: translateY(5px);
-        box-shadow: 0 3px 0 #3c2a1f;
-    }
+@keyframes floatPhrase {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-235px) scale(0.55); }
+}
 
-    #shopBtn { position: absolute; bottom: 28px; right: 32px; }
+#message {
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 42px;
+    color: #c0392b;
+    font-weight: 700;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 60;
+    text-align: center;
+}
 
-    #shop {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 720px;
-        background: #fff9e6;
-        border: 10px solid #5c4033;
-        border-radius: 25px;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        padding: 30px;
-        display: none;
-        z-index: 100;
-        max-height: 82vh;
-        overflow-y: auto;
-    }
+button {
+    padding: 15px 28px;
+    font-family: 'Comic Neue', cursive;
+    font-size: 20px;
+    background: #fff;
+    color: #333;
+    border: 6px solid #5c4033;
+    border-radius: 15px;
+    box-shadow: 0 8px 0 #3c2a1f;
+    cursor: pointer;
+    transition: all 0.1s;
+}
 
-    .shop-section { margin-bottom: 40px; }
-    .shop-section h3 {
-        margin: 0 0 20px 0;
-        font-size: 28px;
-        color: #5c4033;
-        border-bottom: 4px solid #c0392b;
-        padding-bottom: 10px;
-    }
+button:active {
+    transform: translateY(5px);
+    box-shadow: 0 3px 0 #3c2a1f;
+}
 
-    .item {
-        display: flex;
-        align-items: center;
-        padding: 18px 25px;
-        margin: 14px 0;
-        background: #fff;
-        border: 5px solid #5c4033;
-        border-radius: 18px;
-        gap: 25px;
-        font-size: 48px;
-    }
+#shopBtn {
+    position: absolute;
+    bottom: 28px;
+    right: 32px;
+}
+
+#adminBtn {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    border: 4px solid #5c4033;
+    background: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    z-index: 120;
+    padding: 0;
+}
+
+#shop {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 720px;
+    background: #fff9e6;
+    border: 10px solid #5c4033;
+    border-radius: 25px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    padding: 30px;
+    display: none;
+    z-index: 100;
+    max-height: 82vh;
+    overflow-y: auto;
+}
+
+.shop-section {
+    margin-bottom: 40px;
+}
+
+.shop-section h3 {
+    margin: 0 0 20px 0;
+    font-size: 28px;
+    color: #5c4033;
+    border-bottom: 4px solid #c0392b;
+    padding-bottom: 10px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    padding: 18px 25px;
+    margin: 14px 0;
+    background: #fff;
+    border: 5px solid #5c4033;
+    border-radius: 18px;
+    gap: 25px;
+    font-size: 48px;
+}
 </style>
 </head>
+
 <body>
 
 <div id="game">
-    <div id="scorePanel">Очки: <span id="count">0</span></div>
-    <div id="combo">×<span id="comboCount">1</span> КОМБО</div>
-    
+
+    <div id="scorePanel">
+        Очки: <span id="count">0</span>
+    </div>
+
+    <div id="combo">
+        ×<span id="comboCount">1</span> КОМБО
+    </div>
+
     <div id="kid">👶</div>
+
     <div id="boot">🥾</div>
-    
+
     <div id="message"></div>
-    
+
     <button id="shopBtn">🛒 МАГАЗИН</button>
+
+    <button id="adminBtn">A</button>
+
 </div>
 
 <div id="shop">
-    <h2 style="text-align:center; margin-bottom:25px; color:#5c4033;">МАГАЗИН</h2>
-    
+
+    <h2 style="text-align:center; margin-bottom:25px; color:#5c4033;">
+        МАГАЗИН
+    </h2>
+
     <div class="shop-section">
         <h3>🔧 УЛУЧШЕНИЯ</h3>
         <div id="upgrades"></div>
     </div>
-    
+
     <div class="shop-section">
         <h3>🥾 ТИПЫ ПИНКА</h3>
         <div id="weaponSkins"></div>
     </div>
-    
+
     <div class="shop-section">
         <h3>🍰 КОРМЛЕНИЕ</h3>
+
         <div class="item">
             <span>🍰</span>
+
             <div style="flex:1;">
                 <strong>Тортик</strong><br>
                 <small>Покормить ребёнка (+30–60 очков)</small>
             </div>
+
             <button onclick="feedKid()">Покормить</button>
         </div>
     </div>
-    
+
+    <div class="shop-section">
+
+        <h3>🖼️ КАРТИНКИ</h3>
+
+        <div class="item" style="font-size:22px;">
+            <div style="flex:1;">
+                <strong>Поставить картинку оружия</strong><br>
+                <small>Только локально</small>
+            </div>
+
+            <input type="file" id="weaponImageInput">
+        </div>
+
+        <div class="item" style="font-size:22px;">
+            <div style="flex:1;">
+                <strong>Поставить картинку ребёнка</strong><br>
+                <small>Только локально</small>
+            </div>
+
+            <input type="file" id="kidImageInput">
+        </div>
+
+        <div id="globalAdminImages"></div>
+
+    </div>
+
     <div style="text-align:center; margin-top:30px;">
         <button onclick="closeShop()">ЗАКРЫТЬ МАГАЗИН</button>
     </div>
+
 </div>
 
 <audio id="monsterAudio" loop>
@@ -230,45 +312,101 @@
 </audio>
 
 <script>
-// === ПЕРЕМЕННЫЕ ===
+
 let score = 0;
 let combo = 1;
 let lastHit = 0;
 let streak = 0;
 let isEpicMode = false;
 
-let multipliers = { power: 1, comboSpeed: 1, auto: 0 };
+let multipliers = {
+    power: 1,
+    comboSpeed: 1,
+    auto: 0
+};
+
+let isAdmin = false;
+
+let globalImages =
+JSON.parse(localStorage.getItem('globalWeaponImages') || '{}');
+
+let localImages =
+JSON.parse(localStorage.getItem('localWeaponImages') || '{}');
 
 const upgradesList = [
-    { id: "power", name: "Сильный удар", costBase: 120, level: 0, max: 12, desc: "+25% очков", effect: () => multipliers.power += 0.25 },
-    { id: "combo", name: "Быстрое комбо", costBase: 280, level: 0, max: 8,  desc: "Комбо быстрее", effect: () => multipliers.comboSpeed += 0.3 },
-    { id: "auto",  name: "Авто-пинки",   costBase: 450, level: 0, max: 10, desc: "+3 очка/сек", effect: () => multipliers.auto += 3 }
+    {
+        id: "power",
+        name: "Сильный удар",
+        costBase: 120,
+        level: 0,
+        max: 12,
+        desc: "+25% очков",
+        effect: () => multipliers.power += 0.25
+    },
+
+    {
+        id: "combo",
+        name: "Быстрое комбо",
+        costBase: 280,
+        level: 0,
+        max: 8,
+        desc: "Комбо быстрее",
+        effect: () => multipliers.comboSpeed += 0.3
+    },
+
+    {
+        id: "auto",
+        name: "Авто-пинки",
+        costBase: 450,
+        level: 0,
+        max: 10,
+        desc: "+3 очка/сек",
+        effect: () => multipliers.auto += 3
+    }
 ];
 
 const weaponSkins = [
-    { 
-        name: "Ботинок", emoji: "🥾", anim: "translateX(520px) translateY(-170px) rotate(-55deg)",
-        phrases: ["Ой, больно в ноге", "Не бей так сильно", "Я уже плачу", "Мне грустно"]
+
+    {
+        name: "Ботинок",
+        emoji: "🥾",
+        anim: "translateX(520px) translateY(-170px) rotate(-55deg)",
+        phrases: ["Ой", "Ай"]
     },
-    { 
-        name: "Сковорода", emoji: "🥘", anim: "translateX(510px) translateY(-155px) rotate(-130deg)",
-        phrases: ["Горячо очень", "Кожа щиплет", "Больно в боку", "Не хочу так"]
+
+    {
+        name: "Сковорода",
+        emoji: "🥘",
+        anim: "translateX(510px) translateY(-155px) rotate(-130deg)",
+        phrases: ["Ай", "Больно"]
     },
-    { 
-        name: "Утюг", emoji: "♨️", anim: "translateX(530px) translateY(-135px) scale(0.85)",
-        phrases: ["Ой горячо", "Печёт сильно", "Мне жарко", "Не дави"]
+
+    {
+        name: "Утюг",
+        emoji: "♨️",
+        anim: "translateX(530px) translateY(-135px) scale(0.85)",
+        phrases: ["Горячо", "Печёт"]
     },
-    { 
-        name: "Ремень", emoji: "🔗", anim: "translateX(470px) translateY(-205px) rotate(48deg)",
-        phrases: ["Ай ремень", "Жжёт по попе", "Будет синяк", "Не бей ремнём"]
+
+    {
+        name: "Ремень",
+        emoji: "🔗",
+        anim: "translateX(470px) translateY(-205px) rotate(48deg)",
+        phrases: ["Ай", "Не надо"]
     },
-    { 
-        name: "Арматура", emoji: "🛠️", anim: "translateX(545px) translateY(-125px)",
-        phrases: ["Холодно и твёрдо", "Больно в костях", "Ой ой", "Пожалуйста остановись"]
+
+    {
+        name: "Арматура",
+        emoji: "🛠️",
+        anim: "translateX(545px) translateY(-125px)",
+        phrases: ["Ой", "Больно"]
     },
-    { 
-        name: "Табуретка", emoji: "🪑", anim: "translateX(495px) translateY(-195px) rotate(92deg)",
-        phrases: ["Тяжёлая табуретка", "Мне очень тяжело", "Я уже не могу", "Хватит стулом"]
+
+    {
+        name: "Табуретка",
+        emoji: "🪑",
+        anim: "translateX(495px) translateY(-195px) rotate(92deg)",
+        phrases: ["АЙ", "ХВАТИТ"]
     }
 ];
 
@@ -283,195 +421,438 @@ const msgEl = document.getElementById('message');
 const shopEl = document.getElementById('shop');
 const monsterAudio = document.getElementById('monsterAudio');
 
-// Применение смайликов
-function applySkin() {
-    bootEl.textContent = weaponSkins[currentWeapon].emoji;
+function updateCustomImages() {
+
+    const kidImg = localStorage.getItem('kidImage');
+    const globalKidImg = localStorage.getItem('globalKidImage');
+
+    if (kidImg) {
+        kidEl.innerHTML =
+        `<img src="${kidImg}" style="width:230px;height:230px;pointer-events:none;">`;
+    }
+    else if (globalKidImg) {
+        kidEl.innerHTML =
+        `<img src="${globalKidImg}" style="width:230px;height:230px;pointer-events:none;">`;
+    }
+    else {
+        kidEl.textContent = '👶';
+    }
+
+    const localWeapon = localImages[currentWeapon];
+    const globalWeapon = globalImages[currentWeapon];
+
+    if (localWeapon) {
+        bootEl.innerHTML =
+        `<img src="${localWeapon}" style="width:165px;height:165px;pointer-events:none;">`;
+    }
+    else if (globalWeapon) {
+        bootEl.innerHTML =
+        `<img src="${globalWeapon}" style="width:165px;height:165px;pointer-events:none;">`;
+    }
+    else {
+        bootEl.textContent = weaponSkins[currentWeapon].emoji;
+    }
 }
 
-// Покормить тортиком
-window.feedKid = function() {
-    score += 35 + Math.floor(Math.random() * 35);
-    countEl.textContent = Math.floor(score).toLocaleString('ru-RU');
-    
-    kidEl.style.transform = 'scale(1.15)';
-    setTimeout(() => kidEl.style.transform = 'scale(1)', 500);
-
-    const msgs = ["Вкусно спасибо", "Ммм сладкий", "Я немного успокоился"];
-    msgEl.textContent = msgs[Math.floor(Math.random() * msgs.length)];
-    msgEl.style.opacity = '1';
-    setTimeout(() => msgEl.style.opacity = '0', 1400);
-};
-
-// Пинок
 function kick() {
+
     const now = Date.now();
     const timeDiff = now - lastHit;
-    
+
     if (timeDiff < 2100 / multipliers.comboSpeed) {
         streak++;
         combo = Math.min(9, Math.floor(streak / 4) + 1);
-    } else {
+    }
+    else {
         streak = 1;
         combo = 1;
     }
+
     lastHit = now;
 
-    const points = Math.floor(7 * multipliers.power * combo);
+    const points =
+    Math.floor(7 * multipliers.power * combo);
+
     score += points;
-    countEl.textContent = Math.floor(score).toLocaleString('ru-RU');
+
+    countEl.textContent =
+    Math.floor(score).toLocaleString('ru-RU');
 
     kidEl.classList.remove('hit');
     void kidEl.offsetWidth;
     kidEl.classList.add('hit');
 
-    bootEl.style.transform = weaponSkins[currentWeapon].anim;
-    setTimeout(() => bootEl.style.transform = '', 340);
+    bootEl.style.transform =
+    weaponSkins[currentWeapon].anim;
 
-    // Эпик-режим для табуретки
+    setTimeout(() => {
+        bootEl.style.transform = '';
+    }, 340);
+
     if (currentWeapon === 5) {
-        document.body.style.background = '#9f0000';
-        isEpicMode = true;
-        monsterAudio.currentTime = 0;
-        monsterAudio.play().catch(() => {});
-    }
 
-    // Плавающие фразы (с разбросом, чтобы не накладывались)
-    const phrases = weaponSkins[currentWeapon].phrases;
-    phrases.forEach((phrase, i) => {
-        if (Math.random() > 0.35) {
-            setTimeout(() => {
-                const el = document.createElement('div');
-                el.className = 'floating';
-                el.textContent = phrase;
-                const gameRect = document.getElementById('game').getBoundingClientRect();
-                const kRect = kidEl.getBoundingClientRect();
-                const x = kRect.left - gameRect.left + 85 + (Math.random() * 90 - 45);
-                const y = kRect.top - gameRect.top + 105 + (i * 28);
-                el.style.left = x + 'px';
-                el.style.top = y + 'px';
-                document.getElementById('game').appendChild(el);
-                setTimeout(() => el.remove(), 2250);
-            }, i * 160);
+        document.body.style.background = '#9f0000';
+
+        isEpicMode = true;
+
+        if (monsterAudio.paused) {
+            monsterAudio.play().catch(() => {});
         }
-    });
+    }
 
     comboCountEl.textContent = combo;
-    comboEl.style.opacity = '1';
-    setTimeout(() => { if (Date.now() - lastHit > 1700) comboEl.style.opacity = '0'; }, 700);
 
-    if (Math.random() < 0.45) {
-        msgEl.textContent = phrases[Math.floor(Math.random() * phrases.length)];
-        msgEl.style.opacity = '1';
-        setTimeout(() => msgEl.style.opacity = '0', 1000);
-    }
+    comboEl.style.opacity = '1';
+
+    setTimeout(() => {
+
+        if (Date.now() - lastHit > 1700) {
+            comboEl.style.opacity = '0';
+        }
+
+    }, 700);
 }
 
-// Магазин
+window.feedKid = function() {
+
+    score += 35 + Math.floor(Math.random() * 35);
+
+    countEl.textContent =
+    Math.floor(score).toLocaleString('ru-RU');
+
+    kidEl.style.transform = 'scale(1.15)';
+
+    setTimeout(() => {
+        kidEl.style.transform = 'scale(1)';
+    }, 500);
+};
+
 function renderShop() {
-    const upContainer = document.getElementById('upgrades');
+
+    const upContainer =
+    document.getElementById('upgrades');
+
     upContainer.innerHTML = '';
+
     upgradesList.forEach((up, i) => {
-        const cost = Math.floor(up.costBase * Math.pow(1.4, up.level));
+
+        const cost =
+        Math.floor(up.costBase * Math.pow(1.4, up.level));
+
         const div = document.createElement('div');
+
         div.className = 'item';
+
         div.style.fontSize = '23px';
+
         div.innerHTML = `
-            <div style="flex:1;">
-                <strong>${up.name}</strong><br>
-                <small>${up.desc} • Уровень ${up.level}/${up.max}</small>
-            </div>
-            <button onclick="buyUpgrade(${i})" ${up.level >= up.max ? 'disabled' : ''}>
-                ${cost} очков
-            </button>
+        <div style="flex:1;">
+            <strong>${up.name}</strong><br>
+            <small>${up.desc} • Уровень ${up.level}/${up.max}</small>
+        </div>
+
+        <button onclick="buyUpgrade(${i})">
+            ${cost} очков
+        </button>
         `;
+
         upContainer.appendChild(div);
     });
 
-    const weaponContainer = document.getElementById('weaponSkins');
+    const weaponContainer =
+    document.getElementById('weaponSkins');
+
     weaponContainer.innerHTML = '';
+
     weaponSkins.forEach((skin, i) => {
+
         const div = document.createElement('div');
+
         div.className = 'item';
+
         div.innerHTML = `
-            <span>${skin.emoji}</span>
-            <div style="flex:1;"><strong>${skin.name}</strong></div>
-            <button onclick="selectWeapon(${i})">Выбрать</button>
+        <span>${skin.emoji}</span>
+
+        <div style="flex:1;">
+            <strong>${skin.name}</strong>
+        </div>
+
+        <button onclick="selectWeapon(${i})">
+            Выбрать
+        </button>
         `;
+
         weaponContainer.appendChild(div);
     });
+
+    const adminDiv =
+    document.getElementById('globalAdminImages');
+
+    if (isAdmin) {
+
+        adminDiv.innerHTML = `
+
+        <div class="item" style="font-size:22px;">
+            <div style="flex:1;">
+                <strong>ГЛОБАЛЬНАЯ картинка оружия</strong>
+            </div>
+
+            <input type="file" id="globalWeaponInput">
+        </div>
+
+        <div class="item" style="font-size:22px;">
+            <div style="flex:1;">
+                <strong>ГЛОБАЛЬНАЯ картинка ребёнка</strong>
+            </div>
+
+            <input type="file" id="globalKidInput">
+        </div>
+        `;
+    }
+    else {
+        adminDiv.innerHTML = '';
+    }
 }
 
 window.buyUpgrade = function(i) {
+
     const up = upgradesList[i];
-    const cost = Math.floor(up.costBase * Math.pow(1.4, up.level));
+
+    const cost =
+    Math.floor(up.costBase * Math.pow(1.4, up.level));
+
     if (score >= cost && up.level < up.max) {
+
         score -= cost;
+
         up.level++;
+
         up.effect();
-        countEl.textContent = Math.floor(score).toLocaleString('ru-RU');
+
+        countEl.textContent =
+        Math.floor(score).toLocaleString('ru-RU');
+
         renderShop();
+
         saveGame();
     }
 };
 
 window.selectWeapon = function(i) {
+
     currentWeapon = i;
-    bootEl.textContent = weaponSkins[i].emoji;
-    
+
+    updateCustomImages();
+
     if (isEpicMode) {
-        document.body.style.background = 'linear-gradient(#f8f1e3, #e8d9c0)';
+
+        document.body.style.background =
+        'linear-gradient(#f8f1e3, #e8d9c0)';
+
         monsterAudio.pause();
+
         isEpicMode = false;
     }
-    
+
     saveGame();
+
     closeShop();
 };
 
 function openShop() {
+
     shopEl.style.display = 'block';
+
     renderShop();
 }
 
 function closeShop() {
+
     shopEl.style.display = 'none';
 }
 
 function saveGame() {
-    localStorage.setItem('bootkickEmojiFinal', JSON.stringify({score, multipliers, currentWeapon, upgrades: upgradesList}));
+
+    localStorage.setItem(
+        'bootkickEmojiFinal',
+        JSON.stringify({
+            score,
+            multipliers,
+            currentWeapon,
+            upgrades: upgradesList
+        })
+    );
 }
 
 function loadSave() {
-    const data = localStorage.getItem('bootkickEmojiFinal');
+
+    const data =
+    localStorage.getItem('bootkickEmojiFinal');
+
     if (data) {
+
         const parsed = JSON.parse(data);
+
         score = parsed.score || 0;
-        multipliers = parsed.multipliers || multipliers;
-        currentWeapon = parsed.currentWeapon || 0;
+
+        multipliers =
+        parsed.multipliers || multipliers;
+
+        currentWeapon =
+        parsed.currentWeapon || 0;
+
         if (parsed.upgrades) {
+
             upgradesList.forEach((up, i) => {
-                if (parsed.upgrades[i]) up.level = parsed.upgrades[i].level || 0;
+
+                if (parsed.upgrades[i]) {
+                    up.level =
+                    parsed.upgrades[i].level || 0;
+                }
+
             });
         }
     }
-    countEl.textContent = Math.floor(score).toLocaleString('ru-RU');
-    bootEl.textContent = weaponSkins[currentWeapon].emoji;
+
+    countEl.textContent =
+    Math.floor(score).toLocaleString('ru-RU');
+
+    updateCustomImages();
 }
 
-// Запуск
+document.getElementById('adminBtn')
+.addEventListener('click', () => {
+
+    const pass =
+    prompt('Введите пароль');
+
+    if (pass === 'admin123') {
+
+        isAdmin = true;
+
+        alert('Админ режим включен');
+
+        renderShop();
+    }
+    else {
+        alert('Неверный пароль');
+    }
+});
+
+document.addEventListener('change', function(e) {
+
+    if (e.target.id === 'weaponImageInput') {
+
+        const file = e.target.files[0];
+
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function(ev) {
+
+            localImages[currentWeapon] =
+            ev.target.result;
+
+            localStorage.setItem(
+                'localWeaponImages',
+                JSON.stringify(localImages)
+            );
+
+            updateCustomImages();
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    if (e.target.id === 'kidImageInput') {
+
+        const file = e.target.files[0];
+
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function(ev) {
+
+            localStorage.setItem(
+                'kidImage',
+                ev.target.result
+            );
+
+            updateCustomImages();
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    if (e.target.id === 'globalWeaponInput' && isAdmin) {
+
+        const file = e.target.files[0];
+
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function(ev) {
+
+            globalImages[currentWeapon] =
+            ev.target.result;
+
+            localStorage.setItem(
+                'globalWeaponImages',
+                JSON.stringify(globalImages)
+            );
+
+            updateCustomImages();
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    if (e.target.id === 'globalKidInput' && isAdmin) {
+
+        const file = e.target.files[0];
+
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function(ev) {
+
+            localStorage.setItem(
+                'globalKidImage',
+                ev.target.result
+            );
+
+            updateCustomImages();
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+
 kidEl.addEventListener('click', kick);
 bootEl.addEventListener('click', kick);
-document.getElementById('shopBtn').addEventListener('click', openShop);
+
+document.getElementById('shopBtn')
+.addEventListener('click', openShop);
 
 loadSave();
 
 setTimeout(() => {
-    msgEl.textContent = "КЛИКАЙ НА 😢\nМожно покормить тортиком в магазине";
+
+    msgEl.textContent =
+    "КЛИКАЙ НА 👶";
+
     msgEl.style.opacity = '1';
-    setTimeout(() => msgEl.style.opacity = '0', 2800);
+
+    setTimeout(() => {
+        msgEl.style.opacity = '0';
+    }, 2800);
+
 }, 600);
 
-console.log("%cВерсия со смайликами и исправлениями готова!", "color:#d35400");
 </script>
 
 </body>
