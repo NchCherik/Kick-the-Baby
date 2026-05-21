@@ -7,7 +7,7 @@
 <title>ПИНОК ПО ВИРТУАЛЬНОМУ РЕБЁНКУ</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght=400;700&display=swap');
 
 body {
     margin: 0;
@@ -30,41 +30,77 @@ body {
 
 #game {
     position: relative;
-    width: 860px;
-    height: 560px;
+    width: 100%;
+    max-width: 480px;
+    height: 100vh;
+    max-height: 850px;
     border: 10px solid #5c4033;
     background: #fff9e6;
     box-shadow: 0 15px 40px rgba(0,0,0,0.25);
     overflow: hidden;
     border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Контейнер игровой зоны для удержания элементов на мобилках */
+#actionArea {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #kid {
     position: absolute;
-    left: 310px;
-    top: 115px;
-    font-size: 230px;
+    width: 200px;
+    height: 200px;
     transition: all 0.25s ease-out;
     cursor: pointer;
     z-index: 10;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
     pointer-events: auto;
     -webkit-user-drag: none;
     user-drag: none;
 }
 
+#kid img, #kid svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+
 #boot {
     position: absolute;
-    left: 90px;
-    bottom: 75px;
-    font-size: 165px;
+    left: 10%;
+    bottom: 10%;
+    width: 120px;
+    height: 120px;
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     z-index: 20;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
     pointer-events: auto;
     -webkit-user-drag: none;
     user-drag: none;
+}
+
+#boot img, #boot svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
 }
 
 .hit {
@@ -78,34 +114,35 @@ body {
     100% { transform: scale(1) rotate(0deg); }
 }
 
-#scorePanel {
-    position: absolute;
-    top: 25px;
-    left: 30px;
-    background: #fff;
-    border: 6px solid #5c4033;
-    padding: 15px 30px;
-    border-radius: 15px;
-    font-size: 34px;
-    font-weight: 700;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+#topUI {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
     z-index: 60;
 }
 
+#scorePanel {
+    background: #fff;
+    border: 5px solid #5c4033;
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-size: 28px;
+    font-weight: 700;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
 #combo {
-    position: absolute;
-    top: 105px;
-    left: 35px;
-    font-size: 30px;
+    font-size: 22px;
     color: #c0392b;
     background: #fff;
-    padding: 10px 25px;
-    border-radius: 15px;
-    border: 5px solid #c0392b;
+    padding: 6px 18px;
+    border-radius: 12px;
+    border: 4px solid #c0392b;
     opacity: 0;
     transition: all 0.4s;
     box-shadow: 0 5px 12px rgba(0,0,0,0.15);
-    z-index: 60;
 }
 
 .floating {
@@ -126,55 +163,65 @@ body {
 
 #message {
     position: absolute;
-    top: 48%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 42px;
+    font-size: 36px;
     color: #c0392b;
     font-weight: 700;
     opacity: 0;
     pointer-events: none;
     z-index: 60;
     text-align: center;
+    width: 100%;
 }
 
 button {
-    padding: 15px 28px;
+    padding: 12px 24px;
     font-family: 'Comic Neue', cursive;
-    font-size: 20px;
+    font-size: 18px;
     background: #fff;
     color: #333;
-    border: 6px solid #5c4033;
+    border: 5px solid #5c4033;
     border-radius: 15px;
-    box-shadow: 0 8px 0 #3c2a1f;
+    box-shadow: 0 6px 0 #3c2a1f;
     cursor: pointer;
     transition: all 0.1s;
 }
 
 button:active {
-    transform: translateY(5px);
-    box-shadow: 0 3px 0 #3c2a1f;
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #3c2a1f;
+}
+
+#bottomUI {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 60;
 }
 
 #shopBtn {
-    position: absolute;
-    bottom: 28px;
-    right: 32px;
+    width: 80%;
+    max-width: 250px;
 }
 
 #adminBtn {
     position: absolute;
-    top: 12px;
-    right: 14px;
+    top: 15px;
+    right: 15px;
     width: 38px;
     height: 38px;
     border-radius: 12px;
     border: 4px solid #5c4033;
     background: #fff;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     z-index: 120;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #shop {
@@ -182,40 +229,63 @@ button:active {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 720px;
+    width: 90%;
+    max-width: 440px;
     background: #fff9e6;
-    border: 10px solid #5c4033;
+    border: 8px solid #5c4033;
     border-radius: 25px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-    padding: 30px;
+    padding: 20px;
     display: none;
     z-index: 100;
-    max-height: 82vh;
+    max-height: 80vh;
     overflow-y: auto;
+    box-sizing: border-box;
 }
 
 .shop-section {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 .shop-section h3 {
-    margin: 0 0 20px 0;
-    font-size: 28px;
+    margin: 0 0 15px 0;
+    font-size: 24px;
     color: #5c4033;
     border-bottom: 4px solid #c0392b;
-    padding-bottom: 10px;
+    padding-bottom: 8px;
 }
 
 .item {
     display: flex;
     align-items: center;
-    padding: 18px 25px;
-    margin: 14px 0;
+    padding: 12px 15px;
+    margin: 10px 0;
     background: #fff;
-    border: 5px solid #5c4033;
-    border-radius: 18px;
-    gap: 25px;
-    font-size: 48px;
+    border: 4px solid #5c4033;
+    border-radius: 15px;
+    gap: 15px;
+    font-size: 18px;
+}
+
+.item-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.item-icon svg, .item-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@media(max-height: 600px) {
+    #game { height: 100vh; border-radius: 0; border: none; }
+    #kid { width: 150px; height: 150px; }
+    #boot { width: 90px; height: 90px; }
 }
 </style>
 </head>
@@ -223,30 +293,31 @@ button:active {
 <body>
 
 <div id="game">
-
-    <div id="scorePanel">
-        Очки: <span id="count">0</span>
-    </div>
-
-    <div id="combo">
-        ×<span id="comboCount">1</span> КОМБО
-    </div>
-
-    <div id="kid">👶</div>
-
-    <div id="boot">🥾</div>
-
-    <div id="message"></div>
-
-    <button id="shopBtn">🛒 МАГАЗИН</button>
-
     <button id="adminBtn">A</button>
 
+    <div id="topUI">
+        <div id="scorePanel">
+            Очки: <span id="count">0</span>
+        </div>
+
+        <div id="combo">
+            ×<span id="comboCount">1</span> КОМБО
+        </div>
+    </div>
+
+    <div id="actionArea">
+        <div id="kid"></div>
+        <div id="boot"></div>
+        <div id="message"></div>
+    </div>
+
+    <div id="bottomUI">
+        <button id="shopBtn">🛒 МАГАЗИН</button>
+    </div>
 </div>
 
 <div id="shop">
-
-    <h2 style="text-align:center; margin-bottom:25px; color:#5c4033;">
+    <h2 style="text-align:center; margin-bottom:20px; color:#5c4033; margin-top: 0;">
         МАГАЗИН
     </h2>
 
@@ -262,49 +333,41 @@ button:active {
 
     <div class="shop-section">
         <h3>🍰 КОРМЛЕНИЕ</h3>
-
         <div class="item">
-            <span>🍰</span>
-
+            <div class="item-icon">
+                <svg viewBox="0 0 64 64"><path d="M12 36h40v16H12z" fill="#f39c12"/><path d="M8 48h48v8H8z" fill="#d35400"/><circle cx="32" cy="24" r="8" fill="#e74c3c"/><path d="M30 24h4v12h-4z" fill="#f1c40f"/></svg>
+            </div>
             <div style="flex:1;">
                 <strong>Тортик</strong><br>
-                <small>Покормить ребёнка (+30–60 очков)</small>
+                <small style="font-size: 14px; color: #666;">Покормить ребёнка (+30–60 очков)</small>
             </div>
-
-            <button onclick="feedKid()">Покормить</button>
+            <button onclick="feedKid()" style="font-size: 15px; padding: 8px 12px;">Покормить</button>
         </div>
     </div>
 
     <div class="shop-section">
-
         <h3>🖼️ КАРТИНКИ</h3>
-
-        <div class="item" style="font-size:22px;">
-            <div style="flex:1;">
+        <div class="item" style="font-size:16px; flex-direction: column; align-items: flex-start; gap: 8px;">
+            <div>
                 <strong>Поставить картинку оружия</strong><br>
-                <small>Только локально</small>
+                <small style="color: #666;">Только локально</small>
             </div>
-
-            <input type="file" id="weaponImageInput">
+            <input type="file" id="weaponImageInput" style="width: 100%;">
         </div>
 
-        <div class="item" style="font-size:22px;">
-            <div style="flex:1;">
+        <div class="item" style="font-size:16px; flex-direction: column; align-items: flex-start; gap: 8px;">
+            <div>
                 <strong>Поставить картинку ребёнка</strong><br>
-                <small>Только локально</small>
+                <small style="color: #666;">Только локально</small>
             </div>
-
-            <input type="file" id="kidImageInput">
+            <input type="file" id="kidImageInput" style="width: 100%;">
         </div>
-
         <div id="globalAdminImages"></div>
-
     </div>
 
-    <div style="text-align:center; margin-top:30px;">
+    <div style="text-align:center; margin-top:20px;">
         <button onclick="closeShop()">ЗАКРЫТЬ МАГАЗИН</button>
     </div>
-
 </div>
 
 <audio id="monsterAudio" loop>
@@ -312,7 +375,6 @@ button:active {
 </audio>
 
 <script>
-
 let score = 0;
 let combo = 1;
 let lastHit = 0;
@@ -327,11 +389,8 @@ let multipliers = {
 
 let isAdmin = false;
 
-let globalImages =
-JSON.parse(localStorage.getItem('globalWeaponImages') || '{}');
-
-let localImages =
-JSON.parse(localStorage.getItem('localWeaponImages') || '{}');
+let globalImages = JSON.parse(localStorage.getItem('globalWeaponImages') || '{}');
+let localImages = JSON.parse(localStorage.getItem('localWeaponImages') || '{}');
 
 const upgradesList = [
     {
@@ -343,7 +402,6 @@ const upgradesList = [
         desc: "+25% очков",
         effect: () => multipliers.power += 0.25
     },
-
     {
         id: "combo",
         name: "Быстрое комбо",
@@ -353,7 +411,6 @@ const upgradesList = [
         desc: "Комбо быстрее",
         effect: () => multipliers.comboSpeed += 0.3
     },
-
     {
         id: "auto",
         name: "Авто-пинки",
@@ -365,49 +422,25 @@ const upgradesList = [
     }
 ];
 
+// Пачка качественных SVG взамен текстовых смайлов
+const svgIcons = {
+    baby: `<svg viewBox="0 0 64 64"><circle cx="32" cy="36" r="18" fill="#f3c19d"/><circle cx="26" cy="34" r="2" fill="#333"/><circle cx="38" cy="34" r="2" fill="#333"/><path d="M28 44q4 3 8 0" stroke="#333" stroke-width="2" fill="none"/><path d="M32 18c-5 0-9 4-9 8s2 4 5 1" fill="#f2a172"/></svg>`,
+    boot: `<svg viewBox="0 0 64 64"><path d="M16 12h16v24l16 8v10H12V32z" fill="#795548"/><path d="M12 50h36v4H12z" fill="#3e2723"/><circle cx="20" cy="20" r="2" fill="#fff"/><circle cx="20" cy="28" r="2" fill="#fff"/></svg>`,
+    pan: `<svg viewBox="0 0 64 64"><circle cx="26" cy="32" r="18" fill="#37474f"/><path d="M40 32h18v4H40z" fill="#212121"/></svg>`,
+    iron: `<svg viewBox="0 0 64 64"><path d="M12 48h40V32C52 20 40 16 32 16H12z" fill="#b0bec5"/><path d="M16 24h20v4H16z" fill="#78909c"/><path d="M12 48h40v4H12z" fill="#37474f"/></svg>`,
+    belt: `<svg viewBox="0 0 64 64"><path d="M8 28h40v8H8z" fill="#5d4037"/><rect x="44" y="24" width="12" height="16" fill="#f1c40f" rx="2"/></svg>`,
+    arm: `<svg viewBox="0 0 64 64"><rect x="12" y="28" width="40" height="8" fill="#90a4ae" rx="2"/><path d="M16 28h4v8h-4zM28 28h4v8h-4zM40 28h4v8h-4z" fill="#78909c"/></svg>`,
+    stool: `<svg viewBox="0 0 64 64"><rect x="14" y="20" width="36" height="8" fill="#a1887f" rx="3"/><rect x="18" y="28" width="6" height="24" fill="#8d6e63"/><rect x="40" y="28" width="6" height="24" fill="#8d6e63"/></svg>`
+};
+
+// Адаптированные траектории под резиновое мобильное окно (вместо жестких 500px)
 const weaponSkins = [
-
-    {
-        name: "Ботинок",
-        emoji: "🥾",
-        anim: "translateX(520px) translateY(-170px) rotate(-55deg)",
-        phrases: ["Ой", "Ай"]
-    },
-
-    {
-        name: "Сковорода",
-        emoji: "🥘",
-        anim: "translateX(510px) translateY(-155px) rotate(-130deg)",
-        phrases: ["Ай", "Больно"]
-    },
-
-    {
-        name: "Утюг",
-        emoji: "♨️",
-        anim: "translateX(530px) translateY(-135px) scale(0.85)",
-        phrases: ["Горячо", "Печёт"]
-    },
-
-    {
-        name: "Ремень",
-        emoji: "🔗",
-        anim: "translateX(470px) translateY(-205px) rotate(48deg)",
-        phrases: ["Ай", "Не надо"]
-    },
-
-    {
-        name: "Арматура",
-        emoji: "🛠️",
-        anim: "translateX(545px) translateY(-125px)",
-        phrases: ["Ой", "Больно"]
-    },
-
-    {
-        name: "Табуретка",
-        emoji: "🪑",
-        anim: "translateX(495px) translateY(-195px) rotate(92deg)",
-        phrases: ["АЙ", "ХВАТИТ"]
-    }
+    { name: "Ботинок", svg: svgIcons.boot, anim: "translate(130px, -100px) rotate(-55deg)", phrases: ["Ой", "Ай"] },
+    { name: "Сковорода", svg: svgIcons.pan, anim: "translate(120px, -90px) rotate(-130deg)", phrases: ["Ай", "Больно"] },
+    { name: "Утюг", svg: svgIcons.iron, anim: "translate(140px, -85px) scale(0.85)", phrases: ["Горячо", "Печёт"] },
+    { name: "Ремень", svg: svgIcons.belt, anim: "translate(100px, -120px) rotate(48deg)", phrases: ["Ай", "Не надо"] },
+    { name: "Арматура", svg: svgIcons.arm, anim: "translate(140px, -70px)", phrases: ["Ой", "Больно"] },
+    { name: "Табуретка", svg: svgIcons.stool, anim: "translate(110px, -110px) rotate(92deg)", phrases: ["АЙ", "ХВАТИТ"] }
 ];
 
 let currentWeapon = 0;
@@ -422,437 +455,307 @@ const shopEl = document.getElementById('shop');
 const monsterAudio = document.getElementById('monsterAudio');
 
 function updateCustomImages() {
-
     const kidImg = localStorage.getItem('kidImage');
     const globalKidImg = localStorage.getItem('globalKidImage');
 
     if (kidImg) {
-        kidEl.innerHTML =
-        `<img src="${kidImg}" style="width:230px;height:230px;pointer-events:none;">`;
-    }
-    else if (globalKidImg) {
-        kidEl.innerHTML =
-        `<img src="${globalKidImg}" style="width:230px;height:230px;pointer-events:none;">`;
-    }
-    else {
-        kidEl.textContent = '👶';
+        kidEl.innerHTML = `<img src="${kidImg}">`;
+    } else if (globalKidImg) {
+        kidEl.innerHTML = `<img src="${globalKidImg}">`;
+    } else {
+        kidEl.innerHTML = svgIcons.baby;
     }
 
     const localWeapon = localImages[currentWeapon];
     const globalWeapon = globalImages[currentWeapon];
 
     if (localWeapon) {
-        bootEl.innerHTML =
-        `<img src="${localWeapon}" style="width:165px;height:165px;pointer-events:none;">`;
-    }
-    else if (globalWeapon) {
-        bootEl.innerHTML =
-        `<img src="${globalWeapon}" style="width:165px;height:165px;pointer-events:none;">`;
-    }
-    else {
-        bootEl.textContent = weaponSkins[currentWeapon].emoji;
+        bootEl.innerHTML = `<img src="${localWeapon}">`;
+    } else if (globalWeapon) {
+        bootEl.innerHTML = `<img src="${globalWeapon}">`;
+    } else {
+        bootEl.innerHTML = weaponSkins[currentWeapon].svg;
     }
 }
 
 function kick() {
-
     const now = Date.now();
     const timeDiff = now - lastHit;
 
     if (timeDiff < 2100 / multipliers.comboSpeed) {
         streak++;
         combo = Math.min(9, Math.floor(streak / 4) + 1);
-    }
-    else {
+    } else {
         streak = 1;
         combo = 1;
     }
 
     lastHit = now;
 
-    const points =
-    Math.floor(7 * multipliers.power * combo);
-
+    const points = Math.floor(7 * multipliers.power * combo);
     score += points;
 
-    countEl.textContent =
-    Math.floor(score).toLocaleString('ru-RU');
+    countEl.textContent = Math.floor(score).toLocaleString('ru-RU');
 
     kidEl.classList.remove('hit');
     void kidEl.offsetWidth;
     kidEl.classList.add('hit');
 
-    bootEl.style.transform =
-    weaponSkins[currentWeapon].anim;
+    bootEl.style.transform = weaponSkins[currentWeapon].anim;
 
     setTimeout(() => {
         bootEl.style.transform = '';
     }, 340);
 
     if (currentWeapon === 5) {
-
         document.body.style.background = '#9f0000';
-
         isEpicMode = true;
-
         if (monsterAudio.paused) {
             monsterAudio.play().catch(() => {});
         }
     }
 
     comboCountEl.textContent = combo;
-
     comboEl.style.opacity = '1';
 
     setTimeout(() => {
-
         if (Date.now() - lastHit > 1700) {
             comboEl.style.opacity = '0';
         }
-
     }, 700);
 }
 
 window.feedKid = function() {
-
     score += 35 + Math.floor(Math.random() * 35);
-
-    countEl.textContent =
-    Math.floor(score).toLocaleString('ru-RU');
+    countEl.textContent = Math.floor(score).toLocaleString('ru-RU');
 
     kidEl.style.transform = 'scale(1.15)';
-
     setTimeout(() => {
         kidEl.style.transform = 'scale(1)';
     }, 500);
 };
 
+// Запуск фонового автокликера
+setInterval(() => {
+    if (multipliers.auto > 0) {
+        score += multipliers.auto;
+        countEl.textContent = Math.floor(score).toLocaleString('ru-RU');
+        saveGame();
+    }
+}, 1000);
+
 function renderShop() {
-
-    const upContainer =
-    document.getElementById('upgrades');
-
+    const upContainer = document.getElementById('upgrades');
     upContainer.innerHTML = '';
 
     upgradesList.forEach((up, i) => {
-
-        const cost =
-        Math.floor(up.costBase * Math.pow(1.4, up.level));
-
+        const cost = Math.floor(up.costBase * Math.pow(1.4, up.level));
         const div = document.createElement('div');
-
         div.className = 'item';
-
-        div.style.fontSize = '23px';
-
+        div.style.fontSize = '18px';
         div.innerHTML = `
         <div style="flex:1;">
             <strong>${up.name}</strong><br>
-            <small>${up.desc} • Уровень ${up.level}/${up.max}</small>
+            <small style="color:#666;">${up.desc} • Уровень ${up.level}/${up.max}</small>
         </div>
-
-        <button onclick="buyUpgrade(${i})">
+        <button onclick="buyUpgrade(${i})" style="font-size:15px; padding:8px 12px;">
             ${cost} очков
         </button>
         `;
-
         upContainer.appendChild(div);
     });
 
-    const weaponContainer =
-    document.getElementById('weaponSkins');
-
+    const weaponContainer = document.getElementById('weaponSkins');
     weaponContainer.innerHTML = '';
 
     weaponSkins.forEach((skin, i) => {
-
         const div = document.createElement('div');
-
         div.className = 'item';
+        
+        let displayIcon = skin.svg;
+        if (localImages[i]) displayIcon = `<img src="${localImages[i]}">`;
+        else if (globalImages[i]) displayIcon = `<img src="${globalImages[i]}">`;
 
         div.innerHTML = `
-        <span>${skin.emoji}</span>
-
+        <div class="item-icon">${displayIcon}</div>
         <div style="flex:1;">
             <strong>${skin.name}</strong>
         </div>
-
-        <button onclick="selectWeapon(${i})">
+        <button onclick="selectWeapon(${i})" style="font-size:15px; padding:8px 12px;">
             Выбрать
         </button>
         `;
-
         weaponContainer.appendChild(div);
     });
 
-    const adminDiv =
-    document.getElementById('globalAdminImages');
-
+    const adminDiv = document.getElementById('globalAdminImages');
     if (isAdmin) {
-
         adminDiv.innerHTML = `
-
-        <div class="item" style="font-size:22px;">
-            <div style="flex:1;">
-                <strong>ГЛОБАЛЬНАЯ картинка оружия</strong>
-            </div>
-
-            <input type="file" id="globalWeaponInput">
+        <div class="item" style="font-size:16px; flex-direction: column; align-items: flex-start; gap: 8px;">
+            <div><strong>ГЛОБАЛЬНАЯ картинка оружия</strong></div>
+            <input type="file" id="globalWeaponInput" style="width:100%;">
         </div>
-
-        <div class="item" style="font-size:22px;">
-            <div style="flex:1;">
-                <strong>ГЛОБАЛЬНАЯ картинка ребёнка</strong>
-            </div>
-
-            <input type="file" id="globalKidInput">
+        <div class="item" style="font-size:16px; flex-direction: column; align-items: flex-start; gap: 8px;">
+            <div><strong>ГЛОБАЛЬНАЯ картинка ребёнка</strong></div>
+            <input type="file" id="globalKidInput" style="width:100%;">
         </div>
         `;
-    }
-    else {
+    } else {
         adminDiv.innerHTML = '';
     }
 }
 
 window.buyUpgrade = function(i) {
-
     const up = upgradesList[i];
-
-    const cost =
-    Math.floor(up.costBase * Math.pow(1.4, up.level));
+    const cost = Math.floor(up.costBase * Math.pow(1.4, up.level));
 
     if (score >= cost && up.level < up.max) {
-
         score -= cost;
-
         up.level++;
-
         up.effect();
-
-        countEl.textContent =
-        Math.floor(score).toLocaleString('ru-RU');
-
+        countEl.textContent = Math.floor(score).toLocaleString('ru-RU');
         renderShop();
-
         saveGame();
     }
 };
 
 window.selectWeapon = function(i) {
-
     currentWeapon = i;
-
     updateCustomImages();
 
     if (isEpicMode) {
-
-        document.body.style.background =
-        'linear-gradient(#f8f1e3, #e8d9c0)';
-
+        document.body.style.background = 'linear-gradient(#f8f1e3, #e8d9c0)';
         monsterAudio.pause();
-
         isEpicMode = false;
     }
 
     saveGame();
-
     closeShop();
 };
 
 function openShop() {
-
     shopEl.style.display = 'block';
-
     renderShop();
 }
 
 function closeShop() {
-
     shopEl.style.display = 'none';
 }
 
 function saveGame() {
-
     localStorage.setItem(
         'bootkickEmojiFinal',
         JSON.stringify({
             score,
             multipliers,
             currentWeapon,
-            upgrades: upgradesList
+            upgrades: upgradesList.map(u => ({ id: u.id, level: u.level }))
         })
     );
 }
 
 function loadSave() {
-
-    const data =
-    localStorage.getItem('bootkickEmojiFinal');
-
+    const data = localStorage.getItem('bootkickEmojiFinal');
     if (data) {
-
         const parsed = JSON.parse(data);
-
         score = parsed.score || 0;
-
-        multipliers =
-        parsed.multipliers || multipliers;
-
-        currentWeapon =
-        parsed.currentWeapon || 0;
+        if (parsed.multipliers) {
+            multipliers = parsed.multipliers;
+        }
+        currentWeapon = parsed.currentWeapon || 0;
 
         if (parsed.upgrades) {
-
-            upgradesList.forEach((up, i) => {
-
-                if (parsed.upgrades[i]) {
-                    up.level =
-                    parsed.upgrades[i].level || 0;
+            parsed.upgrades.forEach(savedUp => {
+                const realUp = upgradesList.find(u => u.id === savedUp.id);
+                if (realUp) {
+                    realUp.level = savedUp.level || 0;
                 }
-
             });
+            // Восстановление чистых функций расчета после перезагрузки
+            multipliers.power = 1 + (upgradesList.find(u => u.id === "power").level * 0.25);
+            multipliers.comboSpeed = 1 + (upgradesList.find(u => u.id === "combo").level * 0.3);
+            multipliers.auto = upgradesList.find(u => u.id === "auto").level * 3;
         }
     }
 
-    countEl.textContent =
-    Math.floor(score).toLocaleString('ru-RU');
-
+    countEl.textContent = Math.floor(score).toLocaleString('ru-RU');
     updateCustomImages();
 }
 
-document.getElementById('adminBtn')
-.addEventListener('click', () => {
-
-    const pass =
-    prompt('Введите пароль');
-
+document.getElementById('adminBtn').addEventListener('click', () => {
+    const pass = prompt('Введите пароль');
     if (pass === 'admin123') {
-
         isAdmin = true;
-
         alert('Админ режим включен');
-
         renderShop();
-    }
-    else {
+    } else {
         alert('Неверный пароль');
     }
 });
 
 document.addEventListener('change', function(e) {
-
     if (e.target.id === 'weaponImageInput') {
-
         const file = e.target.files[0];
-
         if (!file) return;
-
         const reader = new FileReader();
-
         reader.onload = function(ev) {
-
-            localImages[currentWeapon] =
-            ev.target.result;
-
-            localStorage.setItem(
-                'localWeaponImages',
-                JSON.stringify(localImages)
-            );
-
+            localImages[currentWeapon] = ev.target.result;
+            localStorage.setItem('localWeaponImages', JSON.stringify(localImages));
             updateCustomImages();
+            renderShop();
         };
-
         reader.readAsDataURL(file);
     }
 
     if (e.target.id === 'kidImageInput') {
-
         const file = e.target.files[0];
-
         if (!file) return;
-
         const reader = new FileReader();
-
         reader.onload = function(ev) {
-
-            localStorage.setItem(
-                'kidImage',
-                ev.target.result
-            );
-
+            localStorage.setItem('kidImage', ev.target.result);
             updateCustomImages();
         };
-
         reader.readAsDataURL(file);
     }
 
     if (e.target.id === 'globalWeaponInput' && isAdmin) {
-
         const file = e.target.files[0];
-
         if (!file) return;
-
         const reader = new FileReader();
-
         reader.onload = function(ev) {
-
-            globalImages[currentWeapon] =
-            ev.target.result;
-
-            localStorage.setItem(
-                'globalWeaponImages',
-                JSON.stringify(globalImages)
-            );
-
+            globalImages[currentWeapon] = ev.target.result;
+            localStorage.setItem('globalWeaponImages', JSON.stringify(globalImages));
             updateCustomImages();
+            renderShop();
         };
-
         reader.readAsDataURL(file);
     }
 
     if (e.target.id === 'globalKidInput' && isAdmin) {
-
         const file = e.target.files[0];
-
         if (!file) return;
-
         const reader = new FileReader();
-
         reader.onload = function(ev) {
-
-            localStorage.setItem(
-                'globalKidImage',
-                ev.target.result
-            );
-
+            localStorage.setItem('globalKidImage', ev.target.result);
             updateCustomImages();
         };
-
         reader.readAsDataURL(file);
     }
 });
 
 kidEl.addEventListener('click', kick);
 bootEl.addEventListener('click', kick);
-
-document.getElementById('shopBtn')
-.addEventListener('click', openShop);
+document.getElementById('shopBtn').addEventListener('click', openShop);
 
 loadSave();
 
 setTimeout(() => {
-
-    msgEl.textContent =
-    "КЛИКАЙ НА 👶";
-
+    msgEl.textContent = "КЛИКАЙ НА 👶";
     msgEl.style.opacity = '1';
-
     setTimeout(() => {
         msgEl.style.opacity = '0';
     }, 2800);
-
 }, 600);
-
 </script>
 
 </body>
